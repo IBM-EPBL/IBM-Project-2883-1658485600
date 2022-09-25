@@ -1,0 +1,9 @@
+import random
+temp=int(input("enter the temperature value:"))
+humidity=int(input("enter the humidity value:"))
+for i in range(0,500):
+   a=random.randrange(1000)
+   if(temp>a):
+    print("detect alarm!!")
+   else:
+    print("no detect")
