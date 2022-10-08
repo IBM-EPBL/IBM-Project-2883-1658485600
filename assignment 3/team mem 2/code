@@ -1,0 +1,13 @@
+signal = "green, yellow, red"
+light = "purple" 
+if light in signal:
+    if light == "green":
+        print("You can go!")
+    elif light == "yellow":
+        print("Get ready!")
+    else:
+        
+        print("Just wait.")
+else:
+    print("No such traffic light color!")
+
