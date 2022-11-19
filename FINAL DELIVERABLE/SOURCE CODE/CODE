@@ -1,0 +1,44 @@
+import time
+import sys
+import ibmiotf.application
+import ibmiotf.device
+import random
+organization = "67yq8w"
+deviceType = "Nodemcu"
+deviceId = "123"
+authMethod ="token"
+authToken = "12345678"
+def myCommandCallback(cmd):
+    print("Command received: %s" % cmd.data['command'])
+    status=cmd.data['command']
+    if status=="critical stage":
+        print ("critcal stage")
+    elif status =="no problem":
+        print ("no problem")
+    else:
+        print ("Please send proper command")
+try:
+        deviceOptions = {"org": organization, "type": deviceType, "id": deviceId, "auth-method": authMethod, "auth-token" :authToken}
+        deviceCli = ibmiotf.device.Client(deviceOptions)
+except Exception as e:
+        print("Caught exception connecting device %s" % str(e))
+        sys.exit()
+deviceCli.connect()
+while True:
+        temp=random.randint(90,110)
+        if temp>97:
+            temp_status="temperature is high" 
+        else:
+            temp_status="temperature is not high"
+        
+        data = {'temp' : temp,'temp_status':temp_status}
+         
+        def myOnPublishCallback():
+            print("Published Temperature = %s C" % temp, "to IBM Watson")
+            print(temp_status)
+        success = deviceCli.publishEvent("IoTSensor", "json", data, qos=0, on_publish=myOnPublishCallback)
+        if not success:;
+            print("Not connected to IoTF")
+        time.sleep(10)
+deviceClid.commandCallback=myCommandCallback
+deviceCli.disconnect()
